@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Descubrí el nombre del bebé</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #fdfdfd;
+      color: #444;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: #fffef8;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+      border: 2px dashed #cdeccd;
+    }
+    .hidden {
+      display: none;
+    }
+    .letters {
+      font-size: 2.2rem;
+      margin-top: 24px;
+      letter-spacing: 14px;
+      color: #ffa07a;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      background-color: #a3d9a5;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #8bc48a;
+    }
+    input[type=text] {
+      padding: 10px;
+      font-size: 1rem;
+      width: 70%;
+      border-radius: 8px;
+      border: 2px solid #fbc687;
+    }
+    h1 {
+      color: #88c9f9;
+    }
+    p {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>¿Querés descubrir el nombre de nuestro bebé?</h1>
+  <p>Resolvé cada pista y juntá todas las letras. ¡Al final ordenalas!</p>
+
+  <div id="game"></div>
+  <div id="letters" class="letters"></div>
+  <div id="final" class="hidden">
+    <p>Ahora ordená las letras para formar el nombre completo:</p>
+    <input type="text" id="guess" placeholder="Escribí el nombre aquí..." />
+    <button onclick="checkName()">Confirmar</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const puzzles = [
+      {
+        // Letra: A (Arya)
+        question: "¿Cuál es la letra del nombre de una de nuestras hijas perrunas?",
+        answer: "A"
+      },
+      {
+        // Letra: N (de Sebastián)
+        question: "¿Cuál es una consonante del nombre del papá (Sebastián)?",
+        answer: "N"
+      },
+      {
+        // Letra: G (referencia a Génova)
+        question: "Es la inicial del país donde soñamos vacacionar en la costa Amalfitana.",
+        answer: "G"
+      },
+      {
+        // Letra: O (sopa de letras)
+        question: "Encontrá la letra escondida: A B R T L O W M K P",
+        answer: "O"
+      },
+      {
+        // Letra: N (serie lógica)
+        question: "Completá la serie: L, M, __, O, P",
+        answer: "N"
+      },
+      {
+        // Letra: E (inicial común)
+        question: "¿Qué letra comparten: Elefante, Escalera, Espiral?",
+        answer: "E"
+      },
+      {
+        // Letra: R (palabra incompleta)
+        question: "Completá la palabra: FLO__ (pista: imagen de una flor)",
+        answer: "R"
+      }
+    ];
+
+    let current = 0;
+    const collected = [];
+    const gameDiv = document.getElementById("game");
+
+    function showPuzzle() {
+      if (current >= puzzles.length) {
+        document.getElementById("letters").innerText = collected.sort(() => Math.random() - 0.5).join(" ");
+        document.getElementById("final").classList.remove("hidden");
+        gameDiv.innerHTML = "<p>¡Muy bien! Descubriste todas las letras.</p>";
+        return;
+      }
+      const p = puzzles[current];
+      gameDiv.innerHTML = `
+        <div class="card">
+          <p><strong>Pista ${current + 1}:</strong> ${p.question}</p>
+          <input type="text" id="response" placeholder="Escribí tu respuesta..." />
+          <br /><br />
+          <button onclick="checkAnswer()">Responder</button>
+        </div>
+      `;
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("response").value.trim().toUpperCase();
+      if (input === puzzles[current].answer) {
+        collected.push(input);
+        current++;
+        showPuzzle();
+      } else {
+        alert("Respuesta incorrecta. ¡Intentá de nuevo!");
+      }
+    }
+
+    function checkName() {
+      const guess = document.getElementById("guess").value.trim().toUpperCase();
+      if (guess === "GENNARO") {
+        document.getElementById("result").innerText = "¡Correcto! El nombre de nuestro bebé es Gennaro.";
+      } else {
+        document.getElementById("result").innerText = "Hmm... no es correcto. Intentá de nuevo.";
+      }
+    }
+
+    showPuzzle();
+  </script>
+</body>
+</html>
