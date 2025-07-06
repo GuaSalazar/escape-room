@@ -307,6 +307,7 @@
         const seleccion = document.querySelector("input[name='pregunta']:checked");
         if (!seleccion) {
           alert("Por favor seleccioná una opción antes de continuar.");
+          document.querySelector(".boton-responder").disabled = false;
           return; // corta la función si no hay opción marcada
         }
         const valor = parseInt(seleccion.value);
