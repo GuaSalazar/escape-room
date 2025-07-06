@@ -2,7 +2,7 @@
 <html lang="es"> 
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juego Descubre mi nombre</title>
+  <title>Juego Descubrí mi nombre</title>
   <style>
     body {
       font-family: sans-serif;
@@ -93,16 +93,22 @@
   .boton-responder:hover {
     background-color: #45a049;
   }
+  
+  .gif {
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+  }
 </style>
 </head>
 <body>
   <div id="pantalla-inicio">
-    <h1>Descubre mi nombre</h1>
+    <h1>Descubrí mi nombre</h1>
     <p>Para saberlo debes responder el total de las 12 preguntas de forma correcta.</p>
     <button onclick="iniciarJuego()">Iniciar el Juego</button>
   </div>
   <div id="contador" class="oculto">0 / 12</div>
-  <h1>Descubrí el nombre</h1>
+  <h1>Descubrí mi nombre</h1>
   <div id="juego"></div>
   <div id="final" class="oculto"></div>
   <audio id="aplausos" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
