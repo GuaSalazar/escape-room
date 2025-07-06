@@ -1,10 +1,39 @@
 <!DOCTYPE html>
 <html lang="es"> 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juego Descubre mi nombre</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #f2f2f2; position: relative; }
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f2f2f2;
+      position: relative;
+      font-size: 18px; /* Aumenta tamaño base */
+      line-height: 1.6; /* Más espacio entre líneas */
+    }
+    
+    .pregunta p,
+    #juego label,
+    .respuesta-libre,
+    .resultado,
+    #final,
+    #pantalla-inicio p {
+      font-size: 18px; /* Tamaño de preguntas y respuestas */
+      line-height: 1.4; /* Mejor interlineado */
+      word-wrap: break-word; /* Corta en varias líneas si es necesario */
+      white-space: normal; /* Permite varias líneas */
+    }
+    
+    h1 {
+      font-size: 24px;
+      text-align: center;
+    }
+    
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+    }
     #contador {
       position: absolute;
       top: 10px;
