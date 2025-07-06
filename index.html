@@ -50,8 +50,8 @@
 <body>
   <div id="pantalla-inicio">
     <h1>Descubre mi nombre</h1>
-    <p>Para saberlo debes responder el total de las preguntas de forma correcta.</p>
-    <button onclick="iniciarJuego()">Iniciar este desafío</button>
+    <p>Para saberlo debes responder el total de las 12 preguntas de forma correcta.</p>
+    <button onclick="iniciarJuego()">Iniciar el Juego</button>
   </div>
   <div id="contador" class="oculto">0 / 12</div>
   <h1>Juego: Descubrí el nombre secreto</h1>
@@ -116,7 +116,7 @@
     opciones: ["Una válvula electrónica.", "Observatorio espacial desarrollado por 14 países.", "Marca de capacitores."],
     correcta: 1,
     incorrectas: {
-      0: "Hermosa la definición de lámpara.",
+      0: "Viste que hermosa la definición de lámpara.",
       2: "Sabrá dio’ si existe!"
     }
   },
@@ -249,7 +249,7 @@
       const resultado = document.getElementById("resultado");
       if (correcta) {
         puntos++;
-        resultado.innerHTML = "✅ ¡Correcto!";
+        resultado.innerHTML = "✅ ¡Correcto! <br><img src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHZxeXEzMWFic2pyamJiMTFycWprc2dlMnhrOWxybDA4OTRyNXV2eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/J5eM2glp0ZWgEYcyTv/giphy.gif' class='gif'>";
         document.getElementById("aplausos").play();
       } else {
         let mensajeError = "❌";
