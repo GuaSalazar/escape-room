@@ -99,6 +99,16 @@
     display: block;
     margin: 0 auto;
   }
+    
+  .aviso {
+    color: #c62828;
+    background-color: #ffecec;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+  }  
 </style>
 </head>
 <body>
@@ -302,11 +312,14 @@
       const p = preguntas[indice];
       let correcta = false;
       let respuestaSeleccionada;
-
+      const resultado = document.getElementById("resultado");
+      resultado.className = "resultado"; // limpiamos clases previas
+      
       if (p.tipo === "opciones") {
         const seleccion = document.querySelector("input[name='pregunta']:checked");
         if (!seleccion) {
-          alert("Por favor seleccioná una opción antes de continuar.");
+          resultado.classList.add("aviso");
+          resultado.innerHTML = "⚠️ Por favor seleccioná una opción antes de continuar.";
           document.querySelector(".boton-responder").disabled = false;
           return; // corta la función si no hay opción marcada
         }
@@ -317,7 +330,8 @@
         const input = document.getElementById("respuestaTexto");
         const respuesta = normalizarTexto(input.value.trim());
         if (respuesta === "") {
-          alert("Por favor escribí una respuesta antes de continuar.");
+          resultado.classList.add("aviso");
+          resultado.innerHTML = "⚠️ Por favor escribí una respuesta antes de continuar.";
           document.querySelector(".boton-responder").disabled = false;
           return; // corta el avance si está vacío
         }
