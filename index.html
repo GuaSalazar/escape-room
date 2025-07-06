@@ -303,11 +303,13 @@
 
       if (p.tipo === "opciones") {
         const seleccion = document.querySelector("input[name='pregunta']:checked");
-        if (seleccion) {
-          const valor = parseInt(seleccion.value);
-          if (valor === p.correcta) correcta = true;
-          respuestaSeleccionada = valor;
+        if (!seleccion) {
+          alert("Por favor seleccioná una opción antes de continuar.");
+          return; // corta la función si no hay opción marcada
         }
+        const valor = parseInt(seleccion.value);
+        if (valor === p.correcta) correcta = true;
+        respuestaSeleccionada = valor;
       } else {
         const respuesta = normalizarTexto(document.getElementById("respuestaTexto").value.trim());
         if (normalizarTexto(p.correcta) === respuesta) correcta = true;
