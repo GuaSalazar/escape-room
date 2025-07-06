@@ -1,158 +1,328 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Descubrí el nombre del bebé</title>
+  <meta charset="UTF-8">
+  <title>Juego Gennaro</title>
   <style>
-    body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: #fdfdfd;
-      color: #444;
-      margin: 0;
-      padding: 20px;
+    body { font-family: sans-serif; padding: 20px; background: #f2f2f2; position: relative; }
+    #contador {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-weight: bold;
+      background: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #ccc;
+    }
+    .pregunta { margin-bottom: 30px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 5px #ccc; }
+    .opciones input, .respuesta-libre { margin: 5px 0; display: block; }
+    .resultado { font-weight: bold; margin-top: 10px; }
+    .oculto { display: none; }
+    .gif { width: 200px; }
+    #final { margin-top: 30px; font-size: 1.2em; }
+    #reiniciar { margin-top: 20px; padding: 10px 20px; font-size: 1em; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer; }
+      #pantalla-inicio {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
     }
-    .card {
-      background: #fffef8;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-bottom: 24px;
-      border: 2px dashed #cdeccd;
-    }
-    .hidden {
-      display: none;
-    }
-    .letters {
-      font-size: 2.2rem;
-      margin-top: 24px;
-      letter-spacing: 14px;
-      color: #ffa07a;
-    }
-    button {
-      padding: 12px 24px;
-      font-size: 1rem;
+
+    #pantalla-inicio button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #4CAF50;
+      color: white;
       border: none;
-      border-radius: 12px;
-      background-color: #a3d9a5;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background-color: #8bc48a;
-    }
-    input[type=text] {
-      padding: 10px;
-      font-size: 1rem;
-      width: 70%;
       border-radius: 8px;
-      border: 2px solid #fbc687;
+      cursor: pointer;
     }
-    h1 {
-      color: #88c9f9;
+
+    #pantalla-inicio button:hover {
+      background-color: #45a049;
     }
-    p {
-      color: #555;
-    }
-  </style>
+</style>
 </head>
 <body>
-  <h1>¿Querés descubrir el nombre de nuestro bebé?</h1>
-  <p>Resolvé cada pista y juntá todas las letras. ¡Al final ordenalas!</p>
-
-  <div id="game"></div>
-  <div id="letters" class="letters"></div>
-  <div id="final" class="hidden">
-    <p>Ahora ordená las letras para formar el nombre completo:</p>
-    <input type="text" id="guess" placeholder="Escribí el nombre aquí..." />
-    <button onclick="checkName()">Confirmar</button>
-    <p id="result"></p>
+  <div id="pantalla-inicio">
+    <h1>Descubre mi nombre</h1>
+    <p>Para saberlo debes responder el total de las preguntas de forma correcta.</p>
+    <button onclick="iniciarJuego()">Iniciar este desafío</button>
   </div>
+  <div id="contador" class="oculto">0 / 12</div>
+  <h1>Juego: Descubrí el nombre secreto</h1>
+  <div id="juego"></div>
+  <div id="final" class="oculto"></div>
+  <audio id="aplausos" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
 
   <script>
-    const puzzles = [
-      {
-        // Letra: A (Arya)
-        question: "¿Cuál es la letra del nombre de una de nuestras hijas perrunas?",
-        answer: "A"
-      },
-      {
-        // Letra: N (de Sebastián)
-        question: "¿Cuál es una consonante del nombre del papá (Sebastián)?",
-        answer: "N"
-      },
-      {
-        // Letra: G (referencia a Génova)
-        question: "Es la inicial del país donde soñamos vacacionar en la costa Amalfitana.",
-        answer: "G"
-      },
-      {
-        // Letra: O (sopa de letras)
-        question: "Encontrá la letra escondida: A B R T L O W M K P",
-        answer: "O"
-      },
-      {
-        // Letra: N (serie lógica)
-        question: "Completá la serie: L, M, __, O, P",
-        answer: "N"
-      },
-      {
-        // Letra: E (inicial común)
-        question: "¿Qué letra comparten: Elefante, Escalera, Espiral?",
-        answer: "E"
-      },
-      {
-        // Letra: R (palabra incompleta)
-        question: "Completá la palabra: FLO__ (pista: imagen de una flor)",
-        answer: "R"
-      }
-    ];
+    const preguntas = [
+  {
+    texto: "¿Cuál es el mejor equipo del fútbol argentino actualmente? (según la IFFHS y yo)",
+    tipo: "opciones",
+    opciones: ["RiBer (esa no se va.. nunca).", "Chacarita.", "Racing.", "Platense."],
+    correcta: 2,
+    incorrectas: {
+      0: "¿Tas seguro que sabes de fulbo?",
+      1: "¿Tas seguro que sabes de fulbo?",
+      3: "¿Tas seguro que sabes de fulbo?"
+    }
+  },
+  {
+    texto: "¿Qué cantante tenía hiperdoncia y se negó a corregirlo para no arriesgar su rango vocal?",
+    tipo: "opciones",
+    opciones: ["Ozzy Osbourne.", "Freddie Mercury.", "Steven Tyle.", "Gustavo Cerati."],
+    correcta: 1,
+    incorrectas: {
+      0: "¡Cuando quieras te podés retirar!",
+      2: "¡Cuando quieras te podés retirar!",
+      3: "¡Cuando quieras te podés retirar!"
+    }
+  },
+  {
+    texto: "¿Cuál es el resultado de 7 ÷ 1/7 x 7?",
+    tipo: "opciones",
+    opciones: ["70", "3430", "490"],
+    correcta: 1,
+    incorrectas: {
+      0: "mmmmmmm dijo la muda.",
+      2: "¿Querés anotarte en el colegio de nuevo?"
+    }
+  },
+  {
+    texto: "¿Qué se hace con: 3 de arena + 1 de cemento?",
+    tipo: "opciones",
+    opciones: ["Cerecita.", "Revoque.", "Concreto.", "Cagada."],
+    correcta: 2,
+    incorrectas: {
+      0: "Mepa que te confundiste con cervecita.",
+      1: "Dio’",
+      3: "Eso seguro y al pie del cañon jaja"
+    }
+  },
+  {
+    texto: "Escribe el valor que sigue de la siguiente secuencia: 1 1 1 2 3 7 23",
+    tipo: "texto",
+    correcta: "164",
+    incorrecto: "https://media.giphy.com/media/l2JehQ2GitHGdVG9y/giphy.gif"
+  },
+  {
+    texto: "¿Qué es el James Webb?",
+    tipo: "opciones",
+    opciones: ["Una válvula electrónica.", "Observatorio espacial desarrollado por 14 países.", "Marca de capacitores."],
+    correcta: 1,
+    incorrectas: {
+      0: "Hermosa la definición de lámpara.",
+      2: "Sabrá dio’ si existe!"
+    }
+  },
+  {
+    texto: "¿Cuál es el hueso más chiquito del cuerpo?",
+    tipo: "opciones",
+    opciones: ["Carreta.", "Estribo.", "Suela.", "Montura."],
+    correcta: 1,
+    incorrectas: {
+      0: "¡Googlea!",
+      2: "¡Googlea!",
+      3: "¡Googlea!"
+    }
+  },
+  {
+    texto: "¿Cómo se llama el personaje amigo de Goku que muere muchas veces?",
+    tipo: "opciones",
+    opciones: ["Stark.", "Krillin.", "Han Solo.", "Nelson."],
+    correcta: 1,
+    incorrectas: {
+      0: "https://media.giphy.com/media/l41YhwlQjO3m0kLz6/giphy.gif",
+      2: "https://media.giphy.com/media/3oriO7A7bt1wsEP4cw/giphy.gif",
+      3: "https://media.giphy.com/media/3oz8xKaR836UJOYeOc/giphy.gif"
+    }
+  },
+  {
+    texto: "¿Quién dijo 'Te lo comiste vos'?",
+    tipo: "opciones",
+    opciones: ["Ricardo Moyo.", "Ricardo Darín.", "Ricardo Iorio.", "Ricardo Fort."],
+    correcta: 2,
+    incorrectas: {
+      0: "😳",
+      1: "https://media.giphy.com/media/l0MYGBzyqJxKk1TWQ/giphy.gif",
+      3: "Como nos quedamos sin este muchacho en Tik Tok!"
+    }
+  },
+  {
+    texto: "La ……….. es siempre y en todo lugar un fenómeno monetario.",
+    tipo: "texto",
+    correcta: "inflación",
+    incorrecto: "¡No te puedo creer!"
+  },
+  {
+    texto: "¿Cuál es el punto más alto de la provincia de Buenos Aires?",
+    tipo: "opciones",
+    opciones: ["Kici arriba de Lousteau", "Tres Picos.", "Aconcagua.", "Champaqui."],
+    correcta: 1,
+    incorrectas: {
+      0: "Vo’ deci!",
+      2: "Vo’ deci!",
+      3: "Vo’ deci!"
+    }
+  },
+  {
+    texto: "¿En qué película se hace referencia a Gargantúa?",
+    tipo: "opciones",
+    opciones: ["Ad Astra.", "El secreto de sus ojos.", "Zoolander.", "Interstellar."],
+    correcta: 3,
+    incorrectas: {
+      0: "Capaz que sí… capaz que no!",
+      1: "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
+      2: "Me pregunto en qué contexto lo dirán!"
+    }
+  }
+]
 
-    let current = 0;
-    const collected = [];
-    const gameDiv = document.getElementById("game");
+    let indice = 0;
+    let puntos = 0;
 
-    function showPuzzle() {
-      if (current >= puzzles.length) {
-        document.getElementById("letters").innerText = collected.sort(() => Math.random() - 0.5).join(" ");
-        document.getElementById("final").classList.remove("hidden");
-        gameDiv.innerHTML = "<p>¡Muy bien! Descubriste todas las letras.</p>";
+    function actualizarContador() {
+      document.getElementById("contador").textContent = `${puntos} / ${preguntas.length}`;
+    }
+
+    function renderPregunta() {
+      const juego = document.getElementById("juego");
+      juego.innerHTML = "";
+
+      if (indice >= preguntas.length) {
+        mostrarResultadoFinal();
         return;
       }
-      const p = puzzles[current];
-      gameDiv.innerHTML = `
-        <div class="card">
-          <p><strong>Pista ${current + 1}:</strong> ${p.question}</p>
-          <input type="text" id="response" placeholder="Escribí tu respuesta..." />
-          <br /><br />
-          <button onclick="checkAnswer()">Responder</button>
-        </div>
-      `;
-    }
 
-    function checkAnswer() {
-      const input = document.getElementById("response").value.trim().toUpperCase();
-      if (input === puzzles[current].answer) {
-        collected.push(input);
-        current++;
-        showPuzzle();
-      } else {
-        alert("Respuesta incorrecta. ¡Intentá de nuevo!");
+      const p = preguntas[indice];
+      const div = document.createElement("div");
+      div.className = "pregunta";
+      div.innerHTML = `<p><strong>${indice + 1}. ${p.texto}</strong></p>`;
+
+      if (p.tipo === "opciones") {
+        p.opciones.forEach((opt, j) => {
+          const label = document.createElement("label");
+          label.innerHTML = `<input type='radio' name='pregunta' value='${j}'> ${opt}`;
+          div.appendChild(label);
+          div.appendChild(document.createElement("br"));
+        });
+      } else if (p.tipo === "texto") {
+        div.innerHTML += `<input type="text" id="respuestaTexto">`;
       }
+
+      const btn = document.createElement("button");
+      btn.textContent = "Responder";
+      btn.onclick = evaluarPregunta;
+      div.appendChild(btn);
+
+      const resultado = document.createElement("div");
+      resultado.id = "resultado";
+      resultado.className = "resultado";
+      div.appendChild(resultado);
+
+      juego.appendChild(div);
     }
 
-    function checkName() {
-      const guess = document.getElementById("guess").value.trim().toUpperCase();
-      if (guess === "GENNARO") {
-        document.getElementById("result").innerText = "¡Correcto! El nombre de nuestro bebé es Gennaro.";
+    function evaluarPregunta() {
+      const p = preguntas[indice];
+      let correcta = false;
+      let respuestaSeleccionada;
+
+      if (p.tipo === "opciones") {
+        const seleccion = document.querySelector("input[name='pregunta']:checked");
+        if (seleccion) {
+          const valor = parseInt(seleccion.value);
+          if (valor === p.correcta) correcta = true;
+          respuestaSeleccionada = valor;
+        }
       } else {
-        document.getElementById("result").innerText = "Hmm... no es correcto. Intentá de nuevo.";
+        const respuesta = document.getElementById("respuestaTexto").value.trim().toLowerCase();
+        if (respuesta === p.correcta.toLowerCase()) correcta = true;
+        respuestaSeleccionada = respuesta;
       }
+
+      const resultado = document.getElementById("resultado");
+      if (correcta) {
+        puntos++;
+        resultado.innerHTML = "✅ ¡Correcto!";
+        document.getElementById("aplausos").play();
+      } else {
+        let mensajeError = "❌";
+        if (p.tipo === "opciones" && p.incorrectas && respuestaSeleccionada in p.incorrectas) {
+          mensajeError += ` ${p.incorrectas[respuestaSeleccionada]}`;
+          if (p.incorrectas[respuestaSeleccionada].includes("giphy.com")) {
+            mensajeError = `❌ <img src='${p.incorrectas[respuestaSeleccionada]}' class='gif'>`;
+          }
+        } else if (p.tipo === "texto" && p.incorrecto) {
+          if (typeof p.incorrecto === 'string' && p.incorrecto.includes("giphy.com")) {
+            mensajeError = `❌ <img src='${p.incorrecto}' class='gif'>`;
+          } else {
+            mensajeError += ` ${p.incorrecto}`;
+          }
+        }
+        resultado.innerHTML = mensajeError;
+      }
+
+      actualizarContador();
+      setTimeout(() => {
+        indice++;
+        renderPregunta();
+      }, 2000);
     }
 
-    showPuzzle();
+    function mostrarResultadoFinal() {
+      const juego = document.getElementById("juego");
+      const final = document.getElementById("final");
+      juego.innerHTML = "";
+      final.classList.remove("oculto");
+
+      let letras = "";
+      let mensaje = "";
+      let gif = "";
+      if (puntos === 12) {
+        letras = "G E N N A R O";
+        mensaje = "¡Felicidades!";
+      } else if (puntos >= 8) {
+        letras = "A N E N";
+        mensaje = "¡Muy bien!";
+      } else if (puntos >= 5) {
+        letras = "N N";
+        mensaje = "¡A seguir intentando!";
+      } else {
+        mensaje = "Seguí participando, tipo promo 🎁";
+        gif = "<img src='https://media.giphy.com/media/l2JdYJdcUejQ9DzI0/giphy.gif' class='gif'>";
+      }
+
+      final.innerHTML = `<p>Respuestas correctas: ${puntos} / ${preguntas.length}</p>
+                         <p>${mensaje}</p>
+                         ${letras ? `<p>¡Recompensa!: <strong>${letras}</strong></p>` : ""}
+                         ${gif}
+                         <br><button id="reiniciar" onclick="reiniciarJuego()">Una más y no jodemos más</button>`;
+    }
+
+    function iniciarJuego() {
+  document.getElementById("pantalla-inicio").style.display = "none";
+  document.getElementById("contador").classList.remove("oculto");
+  indice = 0;
+  puntos = 0;
+  actualizarContador();
+  renderPregunta();
+}
+
+function reiniciarJuego() {
+      indice = 0;
+      puntos = 0;
+      actualizarContador();
+      document.getElementById("final").classList.add("oculto");
+      renderPregunta();
+    }
+
+    // Se inicializa al hacer click en 'Iniciar este desafío'
   </script>
 </body>
 </html>
