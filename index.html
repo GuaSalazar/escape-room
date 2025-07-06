@@ -143,7 +143,7 @@
       2: "https://media.giphy.com/media/3oriO7A7bt1wsEP4cw/giphy.gif",
       3: "https://media.giphy.com/media/3oz8xKaR836UJOYeOc/giphy.gif"
     },
-    imagenok: "Krilin_DBZ_Artwork.webp";
+    imagenok: "Krilin_DBZ_Artwork.webp"
   },
   {
     texto: "¿Quién dijo 'Te lo comiste vos gordo'?",
@@ -256,7 +256,7 @@
       const resultado = document.getElementById("resultado");
       if (correcta) {
         puntos++;
-        resultado.innerHTML = "✅ ¡Correcto! <br><img src=p.imagenok class='gif'>";
+        resultado.innerHTML = "✅ ¡Correcto! <br><img src='${p.imagenok}' class='gif'>";
           <!--<br><img src='https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHZxeXEzMWFic2pyamJiMTFycWprc2dlMnhrOWxybDA4OTRyNXV2eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/J5eM2glp0ZWgEYcyTv/giphy.gif' class='gif'>";-->
         document.getElementById("aplausos").play();
       } else {
@@ -302,7 +302,7 @@
         letras = "N N";
         mensaje = "¡A seguir intentando!";
       } else {
-        mensaje = "Seguí participando, tipo promo 🎁";
+        mensaje = "Seguí participando 🎁";
         gif = "<img src='https://media.giphy.com/media/l2JdYJdcUejQ9DzI0/giphy.gif' class='gif'>";
       }
 
