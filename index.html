@@ -267,9 +267,9 @@
         let mensajeError = "❌";
         if (p.tipo === "opciones" && p.incorrectas && respuestaSeleccionada in p.incorrectas) {
           mensajeError += ` ${p.incorrectas[respuestaSeleccionada]}`;
-          if (p.incorrectas[respuestaSeleccionada].includes("giphy.com")) {
-            mensajeError = `❌ <img src='${p.incorrectas[respuestaSeleccionada]}' class='gif'>`;
-          }
+          <!--if (p.incorrectas[respuestaSeleccionada].includes("giphy.com")) {-->
+          <!--  mensajeError = `❌ <img src='${p.incorrectas[respuestaSeleccionada]}' class='gif'>`;-->
+          <!--}-->        
         } else if (p.tipo === "texto" && p.incorrecto) {
           if (typeof p.incorrecto === 'string' && p.incorrecto.includes("giphy.com")) {
             mensajeError = `❌ <img src='${p.incorrecto}' class='gif'>`;
