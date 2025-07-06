@@ -314,7 +314,13 @@
         if (valor === p.correcta) correcta = true;
         respuestaSeleccionada = valor;
       } else {
-        const respuesta = normalizarTexto(document.getElementById("respuestaTexto").value.trim());
+        const input = document.getElementById("respuestaTexto");
+        const respuesta = normalizarTexto(input.value.trim());
+        if (respuesta === "") {
+          alert("Por favor escribí una respuesta antes de continuar.");
+          document.querySelector(".boton-responder").disabled = false;
+          return; // corta el avance si está vacío
+        }
         if (normalizarTexto(p.correcta) === respuesta) correcta = true;
         respuestaSeleccionada = respuesta;
       }
