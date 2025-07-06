@@ -286,6 +286,7 @@
       btn.textContent = "Responder";
       btn.className = "boton-responder";
       btn.onclick = evaluarPregunta;
+      btn.disabled = false;
       div.appendChild(btn);
 
       const resultado = document.createElement("div");
@@ -297,6 +298,7 @@
     }
 
     function evaluarPregunta() {
+      document.querySelector(".boton-responder").disabled = true;
       const p = preguntas[indice];
       let correcta = false;
       let respuestaSeleccionada;
