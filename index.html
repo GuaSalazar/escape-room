@@ -249,8 +249,8 @@
           respuestaSeleccionada = valor;
         }
       } else {
-        const respuesta = document.getElementById("respuestaTexto").value.trim().toLowerCase();
-        if (respuesta === p.correcta.toLowerCase()) correcta = true;
+        const respuesta = normalizarTexto(document.getElementById("respuestaTexto").value.trim());
+        if (normalizarTexto(p.correcta) === respuesta) correcta = true;
         respuestaSeleccionada = respuesta;
       }
 
@@ -334,6 +334,12 @@ function reiniciarJuego() {
       document.getElementById("final").classList.add("oculto");
       renderPregunta();
     }
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, '');
+}
 
     // Se inicializa al hacer click en 'Iniciar este desafío'
   </script>
