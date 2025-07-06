@@ -205,6 +205,10 @@
       div.className = "pregunta";
       div.innerHTML = `<p><strong>${indice + 1}. ${p.texto}</strong></p>`;
 
+      if (p.imagen) {
+        div.innerHTML += `<img src='/${p.imagen}' class='gif'><br>`;
+      }
+
       if (p.tipo === "opciones") {
         p.opciones.forEach((opt, j) => {
           const label = document.createElement("label");
