@@ -381,23 +381,32 @@
       let mensaje = "";
       let gif = "";
       if (puntos === 12) {
-        letras = "G E N N A R O";
-        mensaje = "¡Felicidades!";
-      } else if (puntos >= 8) {
+        final.innerHTML = `
+          <p>🎉 ¡Felicitaciones! Respondiste todo correctamente.</p>
+          <button id="btnMostrarNombre" class="boton-descubrir">🎉 Hacé clic y descubrí el nombre</button>
+          <div id="nombreRevelado" style="display:none; font-size: 2em; margin-top: 15px; color: #2e7d32; font-weight: bold;"></div>`
+      ;
+      document.getElementById("btnMostrarNombre").addEventListener("click", () => {
+        document.getElementById("nombreRevelado").textContent = "GENNARO";
+        document.getElementById("nombreRevelado").style.display = "block";
+      });
+      } else { 
+        if (puntos >= 8) {
         letras = "A N E N";
-      } else if (puntos >= 5) {
-        letras = "N N";
-        mensaje = "¡A seguir intentando!";
-      } else {
-        mensaje = "Seguí participando 🎁";
-        gif = "<img src='https://media.giphy.com/media/l2JdYJdcUejQ9DzI0/giphy.gif' class='gif'>";
-      }
-
-      final.innerHTML = `<p>Respuestas correctas: ${puntos} / ${preguntas.length}</p>
+        } else if (puntos >= 5) {
+          letras = "N N";
+          mensaje = "¡A seguir intentando!";
+        } else {
+          mensaje = "Seguí participando 🎁";
+          gif = "<img src='https://media.giphy.com/media/l2JdYJdcUejQ9DzI0/giphy.gif' class='gif'>";
+        }
+  
+        final.innerHTML = `<p>Respuestas correctas: ${puntos} / ${preguntas.length}</p>
                          <p>${mensaje}</p>
                          ${letras ? `<p>¡Solo puedo darte estas letras... adiviná o volvé a jugar!: <strong>${letras}</strong></p>` : ""}
                          ${gif}
                          <br><button id="reiniciar" onclick="reiniciarJuego()">Una más y no jodemos más</button>`;
+      }
     }
 
     function iniciarJuego() {
