@@ -387,8 +387,13 @@
           <div id="nombreRevelado" style="display:none; font-size: 2em; margin-top: 15px; color: #2e7d32; font-weight: bold;"></div>`
       ;
       document.getElementById("btnMostrarNombre").addEventListener("click", () => {
-        document.getElementById("nombreRevelado").textContent = "GENNARO";
-        document.getElementById("nombreRevelado").style.display = "block";
+      const nombre = document.getElementById("nombreRevelado");
+      nombre.textContent = "GENNARO";
+      nombre.style.display = "block";
+      nombre.style.fontSize = "3em";
+      nombre.style.fontWeight = "bold";
+      nombre.style.textAlign = "center";
+      nombre.style.marginTop = "20px";
       });
       } else { 
         if (puntos >= 8) {
