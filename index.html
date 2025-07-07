@@ -395,9 +395,10 @@
       nombre.style.textAlign = "center";
       nombre.style.marginTop = "20px";
       });
-      } else { 
+      } else {
+        let imagenHTML = "";
         if (puntos >= 8) {
-        letras = "A N E N";
+          letras = "A N E N";
         } else if (puntos >= 5) {
           letras = "N N";
           mensaje = "¡A seguir intentando!";
@@ -405,12 +406,13 @@
           mensaje = "Seguí participando 🎁";
           imagenHTML = `<img src="tapita.png" class="gif">`;
         }
-  
-        final.innerHTML = `<p>Respuestas correctas: ${puntos} / ${preguntas.length}</p>
-                         <p>${mensaje}</p>
-                         ${letras ? `<p>¡Solo puedo darte estas letras... adiviná o volvé a jugar!: <strong>${letras}</strong></p>` : ""}
-                         ${gif}
-                         <br><button id="reiniciar" onclick="reiniciarJuego()">Una más y no jodemos más</button>`;
+      
+        final.innerHTML = `
+          <p>Respuestas correctas: ${puntos} / ${preguntas.length}</p>
+          <p>${mensaje}</p>
+          ${letras ? `<p>¡Solo puedo darte estas letras... adiviná o volvé a jugar!: <strong>${letras}</strong></p>` : ""}
+          ${imagenHTML}
+          <br><button id="reiniciar" class="boton-responder" onclick="reiniciarJuego()">Una más y no jodemos más</button>`;
       }
     }
 
